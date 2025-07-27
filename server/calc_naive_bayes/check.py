@@ -1,8 +1,8 @@
 import random
 from tarfile import data_filter
 
-from classification import Classify
-from model_coach import Train
+from .classify_naive import Classify
+from .model_coach import Train
 
 class Check:
     def __init__(self,df):
@@ -23,7 +23,7 @@ class Check:
         dataframe_dict = train.create_counter(target)
         is_right = 0
         for key,list_val in index_dict.items():
-            dict_res = classify.calculate(dataframe_dict,target,list_val)
+            dict_res = classify.calculate(dataframe_dict, target, list_val)
             maxi = ''
             for item in dict_res.items():
                 if maxi == '':
