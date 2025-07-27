@@ -1,4 +1,5 @@
 import pandas as pd
+from server.calc_naive_bayes.sanitize import sanitize
 
 class Classify:
     def __init__(self,df):
@@ -12,9 +13,10 @@ class Classify:
             for col in dataframe_dict[variable]:
                 print(col)
                 if col != target:
-                    res *= dataframe_dict[variable][col][my_values[col]]
+                    print(my_values[col])
+                    res *= dataframe_dict[str(variable)][str(col)][str(my_values[col])]
             dict_of_res[variable] = res
-            print(f'{res} * ({(dataframe_dict[variable][target][variable])} / {(len(self.df) + len(dataframe_dict[variable][target]))}')
+            print(f'{res} * ({(dataframe_dict[variable][target][variable])} / {(len(self.df) + len(dataframe_dict[variable][target]))})')
             dict_of_res[variable] = res * ((dataframe_dict[variable][target][variable]) / (len(self.df) + len(dataframe_dict[variable][target])-1))
         answer = ''
         num = 0
@@ -35,5 +37,5 @@ class Classify:
         #                 res *= (val[1] / (dataframe_dict[variable][target][variable] + (
         #                             len(dataframe_dict[variable][col])-1)))
         #     dict_of_res[variable] = res * (dataframe_dict[variable][target][variable] / (self.df[target].count() + len(dataframe_dict[variable][target])))
-        return answer
+        return sanitize(dict_of_res)
 

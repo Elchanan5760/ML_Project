@@ -1,10 +1,13 @@
 # from utils.load_df import MyUtils
 # import pandas as pd
 # from calc_naive_bayes.classify_naive import Classify
+from server.calc_naive_bayes.sanitize import sanitize
+
 class Train:
     def __init__(self,df,target):
         self.df = df
         self.target = target
+        print(self.target)
     def create_counter(self):
         print(self.df[self.target])
         values = self.df[self.target].unique()
@@ -35,10 +38,5 @@ class Train:
                     else:
                         dataframe_dict[variable][col][val] = dataframe_dict[variable][col][val] / (len(self.df) + len(self.df[col].unique()))
         print(dataframe_dict)
-        return dataframe_dict
-# o1 = pd.read_csv('C:\\Users\HOME\PycharmProjects\\Naive_Bayes\Data\PlayTennis.csv')
-#
-# a = Train(o1,'PlayTennis')
-# da = a.calculate(a.create_counter())
-# b = Classify(o1)
-# print(b.predict(da,'PlayTennis',{'Outlook': 'Sunny','Temperature': 'Hot','Humidity': 'High','Windy': False}))
+        return sanitize(dataframe_dict)
+

@@ -1,10 +1,12 @@
 from server.calc_naive_bayes.check import Check
-from client.client import req
-
+from client.client import Requests
+from server.calc_naive_bayes.classify_naive import Classify
 
 class Menu:
     def __init__(self,df):
         self.df = df
+        self.request = Requests(r'C:\Users\HOME\PycharmProjects\Naive_Bayes\server\Data\PlayTennis.csv',
+                           self.df.columns[-1])
     def menu(self):
         cond = True
         while cond:
@@ -21,7 +23,7 @@ class Menu:
             else:
                 print("Invalid value\n"
                       "Please try again!")
-    def choose_values(self):
+    def get_train(self):
         cond = False
         columns = self.df.columns.tolist()
         col_not_target = []
@@ -40,12 +42,20 @@ class Menu:
             if not cond:
                 print('Invalid value\n'
                       'Please try again!')
-        result = req(r'C:\Users\HOME\PycharmProjects\Naive_Bayes\server\Data\PlayTennis.csv', target)
+        self.request = Requests(r'C:\Users\HOME\PycharmProjects\Naive_Bayes\server\Data\PlayTennis.csv',
+                           columns[int(target) - 1])
+        result = self.request.req_train()
+        print(result)
+        return result,col_not_target
+
+    def choose_values(self):
+        train = self.get_train()
+        col_not_target = train[1]
         count = 0
         values = {}
         while count < len(col_not_target):
-            possible_values = self.df[columns[count]].unique().tolist()
-            print(f"What the {columns[count]}:")
+            possible_values = self.df[col_not_target[count]].unique().tolist()
+            print(f"What the {col_not_target[count]}:")
             options = []
             for i,val in enumerate(possible_values):
                 print(f"{i+1}. {val}")
@@ -60,7 +70,17 @@ class Menu:
             else:
                 print('Invalid value\n'
                       'Please try again!')
-
+        # res = self.request.req_classify(train[0],values)
+        print('this',train[0])
+        print('this is',train[1])
+        o1 = Classify(self.df)
+        res = o1.predict(train[0]['answer'],'PlayTennis',values)
+        print(res)
+        print(type(res))
+        # for k,v in res.items():
+        #     print(type(k))
+        #     for ke in v.i
+        #     print(type())
 
         # print(model)
         # result = calc.calculate(model, columns[int(target) - 1], )

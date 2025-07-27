@@ -1,18 +1,47 @@
 import requests
 
+class Requests:
+    def __init__(self,path,target_col):
+        self.path = path
+        self.target_col = target_col
+    def req_train(self):
+        url = "http://localhost:8000/train"
+        try:
+            print(self.path,self.target_col)
+            response = requests.post(url=url,json={"path": self.path, "target_col": self.target_col})
+            print(type(response))
+            print('-')
+            print(response.text)
+            result = {'status':response.status_code,'answer':response.json()}
+            print(response.json())
+            print(response.status_code)
+            return result
+        except requests.exceptions.RequestException as e:
+            print("Error", e)
+            return e
 
-def req(path,target_col):
-    url = "http://localhost:8000/train"
-    try:
-        print(path,target_col)
-        response = requests.post(url=url,json={"path": path, "target_col": target_col})
-        print(type(response))
-        print('-')
-        print(response.text)
-        # return {'status':response.status_code,'answer':response.json()}
-        print(response.json())
-        print(response.status_code)
-        return {'status' : response.status_code , 'answer' : response.json()}
-    except requests.exceptions.RequestException as e:
-        print("Error", e)
-        return e
+    def req_classify(self,model_dict,values):
+        url = "http://localhost:8000/classify"
+        try:
+            print(self.path, self.target_col)
+            response = requests.post(
+                url=url,
+                json={
+                    "req": {
+                        "path": self.path,
+                        "target_col": self.target_col
+                    },
+                    "model": model_dict,
+                    "my_values": values
+                }
+            )
+
+            print(type(response))
+            print('-')
+            print(response.text)
+            result = {'status':response.status_code,'answer':response.json()}
+            print(response.status_code)
+            return result
+        except requests.exceptions.RequestException as e:
+            print("Error", e)
+            return e
