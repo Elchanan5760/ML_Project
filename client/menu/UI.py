@@ -31,7 +31,7 @@ class Menu:
         while not cond:
             print("What is your target:")
             options = []
-            for i,col in enumerate(columns):   #TODO
+            for i,col in enumerate(columns):
                 options.append(f'{i+1}')
                 print(f"{i+1}. {col}")
             target = input()
@@ -70,37 +70,18 @@ class Menu:
             else:
                 print('Invalid value\n'
                       'Please try again!')
-        # res = self.request.req_classify(train[0],values)
-        print('this',train[0])
-        print('this is',train[1])
-        o1 = Classify(self.df)
-        res = o1.predict(train[0]['answer'],'PlayTennis',values)
+        res = self.request.req_classify(values)
         print(res)
         print(type(res))
-        # for k,v in res.items():
-        #     print(type(k))
-        #     for ke in v.i
-        #     print(type())
+        maxi = 0
+        answer = ''
+        for k,v in res['answer'].items():
+            if v > maxi:
+                maxi = v
+                answer = k
+        print(f'The answer is {answer}')
+        return answer
 
-        # print(model)
-        # result = calc.calculate(model, columns[int(target) - 1], )
-        # sumi = 0
-        # print("--------------------------------------------")
-        # print(result)
-        # for val in result['answer'].values():
-        #     print(val)
-        #     sumi += val
-        #     print(sumi)
-        # final_answer = ''
-        # is_first = True
-        # for item in result.items():
-        #     print(f"{item[0]}: {(item[1]/sumi)*100}%")
-        #     if is_first:
-        #         final_answer = item[0]
-        #         is_first = False
-        #     if item[1] > result[final_answer]:
-        #         final_answer = item[0]
-        # print(f'The answer is {final_answer}!')
 
     def choice_check_data(self):
         check = Check(self.df)

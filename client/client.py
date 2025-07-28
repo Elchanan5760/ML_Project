@@ -8,7 +8,7 @@ class Requests:
         url = "http://localhost:8000/train"
         try:
             print(self.path,self.target_col)
-            response = requests.post(url=url,json={"path": self.path, "target_col": self.target_col})
+            response = requests.post(url=url,params={"path": self.path, "target_col": self.target_col})
             print(type(response))
             print('-')
             print(response.text)
@@ -20,25 +20,22 @@ class Requests:
             print("Error", e)
             return e
 
-    def req_classify(self,model_dict,values):
+    def req_classify(self,values):
         url = "http://localhost:8000/classify"
         try:
             print(self.path, self.target_col)
             response = requests.post(
                 url=url,
                 json={
-                    "req": {
                         "path": self.path,
-                        "target_col": self.target_col
-                    },
-                    "model": model_dict,
-                    "my_values": values
-                }
+                        "target_col": self.target_col,
+                        "my_values": values
+                        }
             )
 
             print(type(response))
             print('-')
-            print(response.text)
+            print(response.json())
             result = {'status':response.status_code,'answer':response.json()}
             print(response.status_code)
             return result

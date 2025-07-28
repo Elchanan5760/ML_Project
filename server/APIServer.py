@@ -1,41 +1,51 @@
 from fastapi import FastAPI
-# from utils import load_df
-from pydantic import BaseModel
+from server.json_models.into_json import OnJson
 from starlette.responses import JSONResponse
-from calc_naive_bayes.classify_naive import Classify
+from server.calc_naive_bayes.classify_naive import Classify
 from server.calc_naive_bayes.model_coach import Train
-from client.utils import load_df
-from typing import Any
-app = FastAPI()
+from server.utils import load_df
 
-class TrainRequest(BaseModel):
-    target_col: str
-    path : str
+app = FastAPI()
+jsons = OnJson()
+
 
 @app.post("/train")
-def post_train(req:TrainRequest):
-    print(req.target_col)
+def post_train(target_col: str,path : str):
     try:
-        print(f"Loading data from: {req.path}")
+        print(f"Loading data from: {path}")
         load = load_df.MyUtils()
-        df = load.load_data(req.path)
+        df = load.load_data(path)
         print(f"Data loaded, number of rows: {len(df)}")
-        couch = Train(df,req.target_col)
+        couch = Train(df,target_col)
         result = couch.calculate()
         print(f"Calculation result: {result}")
+        jsons.save_in_json(result)
         return JSONResponse(content=result)
     except Exception as ex:
         print(ex)
         return ex
 
+# @app.post('/classify')
+# def post_classify(data:dict target_col: str,path : str,model:dict,my_values:dict):
+#     try:
+#         load = load_df.MyUtils()
+#         df = load.load_data(path)
+#         classify = Classify(df)
+#         result = classify.predict(model,target_col,my_values)
+#         return JSONResponse(content=result)
+#     except Exception as ex:
+#         print(ex)
+#         return ex
+
 @app.post('/classify')
-def post_classify(req:TrainRequest,model:dict,my_values:dict):
+def post_classify(data:dict):
+    # target_col: str,path : str,model:dict,my_values:dict
     try:
         load = load_df.MyUtils()
-        df = load.load_data(req.path)
+        df = load.load_data(data["path"])
         classify = Classify(df)
-        result = classify.predict(model,req.target_col,my_values)
-        return JSONResponse(content=result)
+        result = classify.predict(jsons.read_json(r'C:\Users\HOME\PycharmProjects\Naive_Bayes\models'),data["target_col"],data["my_values"])
+        return result
     except Exception as ex:
         print(ex)
         return ex
