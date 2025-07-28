@@ -7,12 +7,12 @@ from .model_coach import Train
 class Check:
     def __init__(self,df):
         self.df = df
-    def check_data(self,what_check,target):
+    def check_data(self,present,target):
         classify = Classify(self.df)
         my_list = []
         index_dict = {}
         count = 0
-        while count < what_check:
+        while count < present:
             rn = random.randint(0,len(self.df)-1)
             if not rn in my_list:
                 count += 1
@@ -33,5 +33,5 @@ class Check:
                         maxi = item[0]
             if maxi == self.df.loc[key,target]:
                 is_right += 1
-        print(f'{(is_right / what_check) * 100}%')
-        return is_right / what_check
+        print(f'{(is_right / present) * 100}%')
+        return is_right / present

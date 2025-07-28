@@ -1,12 +1,12 @@
 import pandas as pd
-from server.calc_naive_bayes.sanitize import sanitize
+from .sanitize import my_sanitize
 
 class Classify:
     def __init__(self,df):
         self.df = df
     def predict(self,dataframe_dict, target, my_values):
         print(my_values)
-        my_values = sanitize(my_values)
+        my_values = my_sanitize(my_values)
         dict_of_res = {}
         for variable in dataframe_dict.keys():
             res = 1

@@ -1,20 +1,20 @@
 from fastapi import FastAPI
-from server.json_models.into_json import OnJson
+from json_models.into_json import OnJson
 from starlette.responses import JSONResponse
-from server.calc_naive_bayes.classify_naive import Classify
-from server.calc_naive_bayes.model_coach import Train
-from server.utils import load_df
-
+from calc_naive_bayes.classify_naive import Classify
+from calc_naive_bayes.model_coach import Train
+from utils import load_df
+from json_models.into_json import OnJson
 app = FastAPI()
 jsons = OnJson()
 
 
 @app.post("/train")
-def post_train(target_col: str,path : str):
+def post_train(target_col: str):
     try:
-        print(f"Loading data from: {path}")
+        #print(f"Loading data from: {path}")
         load = load_df.MyUtils()
-        df = load.load_data(path)
+        df = load.load_data()
         print(f"Data loaded, number of rows: {len(df)}")
         couch = Train(df,target_col)
         result = couch.calculate()
@@ -25,7 +25,7 @@ def post_train(target_col: str,path : str):
         print(ex)
         return ex
 
-# @app.post('/classify')
+# @my_app.post('/classify')
 # def post_classify(data:dict target_col: str,path : str,model:dict,my_values:dict):
 #     try:
 #         load = load_df.MyUtils()
@@ -42,14 +42,14 @@ def post_classify(data:dict):
     # target_col: str,path : str,model:dict,my_values:dict
     try:
         load = load_df.MyUtils()
-        df = load.load_data(data["path"])
+        df = load.load_data()
         classify = Classify(df)
-        result = classify.predict(jsons.read_json(r'C:\Users\HOME\PycharmProjects\Naive_Bayes\models'),data["target_col"],data["my_values"])
+        result = classify.predict(jsons.read_json('models'),data["target_col"],data["my_values"])
         return result
     except Exception as ex:
         print(ex)
         return ex
-# @app.get("/train")
+# @my_app.get("/train")
 # def post_user():
 #     try:
 #         return

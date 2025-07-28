@@ -1,16 +1,21 @@
-FROM python:3.10-slim
+# Use official Python image
+FROM python:3.12-slim
 
-
-# Set the working directory in the container
+# Set working directory in container
 WORKDIR /app
 
-COPY ../requirements.txt requirements.txt
+# Copy requirements file
+COPY requirements.txt .
+
+# Install required packages
 RUN pip install --no-cache-dir -r requirements.txt
-# Copy the application code into the container
 
+COPY . .
+# Expose the port where server will run
+EXPOSE 8000
 
-
-CMD ["uvicorn", ":app", "--host", "localhost", "--port", "8000"]
+# Command to start training service
+CMD ["uvicorn", "APIServer:app", "--host", "0.0.0.0", "--port", "8000"]
 
 
 

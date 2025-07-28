@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
-def sanitize(obj):
+def my_sanitize(obj):
     if isinstance(obj, dict):
-        return {str(k): sanitize(v) for k, v in obj.items()}
+        return {str(k): my_sanitize(v) for k, v in obj.items()}
     elif isinstance(obj, list):
-        return [sanitize(i) for i in obj]
+        return [my_sanitize(i) for i in obj]
     elif isinstance(obj, (np.integer, np.floating)):
         return obj.item()
     elif isinstance(obj, (np.ndarray, pd.Series)):

@@ -1,7 +1,7 @@
 # from utils.load_df import MyUtils
 # import pandas as pd
 # from calc_naive_bayes.classify_naive import Classify
-from server.calc_naive_bayes.sanitize import sanitize
+from .sanitize import my_sanitize
 
 class Train:
     def __init__(self,df,target):
@@ -38,5 +38,5 @@ class Train:
                     else:
                         dataframe_dict[variable][col][val] = dataframe_dict[variable][col][val] / (len(self.df) + len(self.df[col].unique()))
         print(dataframe_dict)
-        return sanitize(dataframe_dict)
+        return my_sanitize(dataframe_dict)
 

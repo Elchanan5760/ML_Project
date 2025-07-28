@@ -1,12 +1,11 @@
-from server.calc_naive_bayes.check import Check
-from client.client import Requests
-from server.calc_naive_bayes.classify_naive import Classify
+
+from client.my_app.request.my_request import Requests
+
 
 class Menu:
     def __init__(self,df):
         self.df = df
-        self.request = Requests(r'C:\Users\HOME\PycharmProjects\Naive_Bayes\server\Data\PlayTennis.csv',
-                           self.df.columns[-1])
+        self.request = Requests(self.df.columns[-1])
     def menu(self):
         cond = True
         while cond:
@@ -42,8 +41,8 @@ class Menu:
             if not cond:
                 print('Invalid value\n'
                       'Please try again!')
-        self.request = Requests(r'C:\Users\HOME\PycharmProjects\Naive_Bayes\server\Data\PlayTennis.csv',
-                           columns[int(target) - 1])
+        self.request = Requests(
+                                columns[int(target) - 1])
         result = self.request.req_train()
         print(result)
         return result,col_not_target
@@ -83,29 +82,45 @@ class Menu:
         return answer
 
 
-    def choice_check_data(self):
-        check = Check(self.df)
-        cond = True
-        from_data = ''
-        target = ''
-        while cond:
-            print(f"What is your target line:")
-            for i,col in enumerate(self.df.columns):
-                print(f'{i+1}. {col}')
-            target = input()
-            from_data = input(f"How many from {len(self.df)} do you want to check:\n")
-            if target.isdigit() and from_data.isdigit():
-                from_data = int(from_data)
-                target = int(target)
-                if from_data < len(self.df) and target <= len(self.df.columns):
-                    cond = False
-                else:
-                    print('Invalid value\n'
-                          'Please try again!')
-            else:
-                print('Invalid value\n'
-                      'Please try again!')
-        check.check_data(from_data,self.df.columns.tolist()[target-1])
+    # def choice_check_data(self,target):
+    #     cond = True
+    #     while cond:
+    #         print('What percentage do you want to check?')
+    #         present = input()
+    #         if present.isdigit():
+    #             present = float(present)
+    #             if present > 0 and present < 100:
+    #                 cond = False
+    #             else:
+    #                 print('Invalid value\n'
+    #                       'Please try again!')
+    #         else:
+    #             print('Invalid value\n'
+    #                  'Please try again!')
+    #     check = Check(self.df)
+    #     accuracy = check.check_data(present, target)
+        # check = Check(self.df)
+        # cond = True
+        # from_data = ''
+        # target = ''
+        # while cond:
+        #     print(f"What is your target line:")
+        #     for i,col in enumerate(self.df.columns):
+        #         print(f'{i+1}. {col}')
+        #     target = input()
+        #     from_data = input(f"How many from {len(self.df)} do you want to check:\n")
+        #     if target.isdigit() and from_data.isdigit():
+        #         from_data = int(from_data)
+        #         target = int(target)
+        #         if from_data < len(self.df) and target <= len(self.df.columns):
+        #             cond = False
+        #         else:
+        #             print('Invalid value\n'
+        #                   'Please try again!')
+        #     else:
+        #         print('Invalid value\n'
+        #               'Please try again!')
+        # check.check_data(from_data,self.df.columns.tolist()[target-1])
 
 # o1 = Check(pd.read_csv('phishing.csv'))
 # o1.check_data(3300,'class')
