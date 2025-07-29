@@ -1,6 +1,6 @@
 import pandas as pd
 
-class MyUtils:
+class Util:
     def load_data(self):
         #file_path = os.path.join(os.path.dirname(__file__), 'Data', 'PlayTennis.csv')
 

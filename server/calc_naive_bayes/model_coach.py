@@ -1,4 +1,4 @@
-# from utils.load_df import MyUtils
+# from utils.load_df import Util
 # import pandas as pd
 # from calc_naive_bayes.classify_naive import Classify
 from .sanitize import my_sanitize

@@ -13,7 +13,7 @@ jsons = OnJson()
 def post_train(target_col: str):
     try:
         #print(f"Loading data from: {path}")
-        load = load_df.MyUtils()
+        load = load_df.Util()
         df = load.load_data()
         print(f"Data loaded, number of rows: {len(df)}")
         couch = Train(df,target_col)
@@ -28,7 +28,7 @@ def post_train(target_col: str):
 # @my_app.post('/classify')
 # def post_classify(data:dict target_col: str,path : str,model:dict,my_values:dict):
 #     try:
-#         load = load_df.MyUtils()
+#         load = load_df.Util()
 #         df = load.load_data(path)
 #         classify = Classify(df)
 #         result = classify.predict(model,target_col,my_values)
@@ -41,7 +41,7 @@ def post_train(target_col: str):
 def post_classify(data:dict):
     # target_col: str,path : str,model:dict,my_values:dict
     try:
-        load = load_df.MyUtils()
+        load = load_df.Util()
         df = load.load_data()
         classify = Classify(df)
         result = classify.predict(jsons.read_json('models'),data["target_col"],data["my_values"])
